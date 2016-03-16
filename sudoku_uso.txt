@@ -1,0 +1,6 @@
+......................
+Sudoku Implementacion
+
+   Por Cole Ellison
+    Marzo de 2016
+......................

@@ -3,6 +3,7 @@
 // Especificacion y Desarollo de Sistemas de Software
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 class GrafoConColores extends Grafo {
@@ -12,12 +13,6 @@ class GrafoConColores extends Grafo {
 	public GrafoConColores() {
 		super();
 		colores = new HashMap<Integer,Integer>();
-	}
-
-	public void colorear(int vertice, int color) {
-		if (puedeColorear(vertice,color)) {
-			colores.put(vertice,color);
-		}
 	}
 
 	public void borrar(int vertice) {
@@ -42,12 +37,19 @@ class GrafoConColores extends Grafo {
 	}
 
 	public boolean puedeColorear(int vertice, int color) {
+		HashSet<Integer> adyacentes = super.listaAdyacentes(vertice);
 		boolean puede = true;
-		Iterator it = mapa.get(vertice).iterator();
-	    while (it.hasNext()) {
-		    puede = puede && (color == colores.get(it.next()));
-	    }
+		for (Integer temp : adyacentes) {
+			puede = puede && (recibir(temp) != color);
+		}
 	    return puede;
+	}
+
+	public boolean colorear(int vertice, int color) {
+		if (puedeColorear(vertice,color)==true) {
+			colores.put(vertice,color);
+			return true;
+		} else {return false;}
 	}
 
 	public int recibir(int vertice) {
@@ -55,6 +57,24 @@ class GrafoConColores extends Grafo {
 	}
 
 	public static void main(String[] args) {
-
+		GrafoConColores grafo = new GrafoConColores();
+		grafo.anadirVertice(3);
+		grafo.anadirVertice(4);
+		grafo.anadirVertice(2);
+		grafo.anadirVertice(1);
+		System.out.println(grafo.listaVertices());
+		grafo.anadirArista(3,4);
+		grafo.anadirArista(4,1);
+		grafo.anadirArista(3,3);
+		System.out.println(grafo.listaAdyacentes(3));
+		grafo.colorear(3,10);
+		System.out.println(grafo.puedeColorear(4,10));
+		grafo.eliminarArista(3,3);
+		System.out.println(grafo.listaAdyacentes(3));
+		grafo.eliminarVertice(3);
+		System.out.println(grafo.listaAdyacentes(4));
+		grafo.eliminarVertice(1);
+		System.out.println(grafo.listaVertices());
+		System.out.println(grafo.listaAdyacentes(4));
 	}
 }
